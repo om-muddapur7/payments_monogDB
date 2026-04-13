@@ -3,15 +3,16 @@ const app = express();
 app.use(express.json());
 
 const jwt = require('jsonwebtoken');
-require('.env').config();
+require('dotenv').config();
 
 const { User, Payment } = require('./schema');
+const { authMiddleware } = require('./middleware');
 
 app.post("/signup", async(req, res) => {
     const username = req.body.username;
     const password = req.body.password;
-    const firstname = req.body.firstname;
-    const lastname = req.body.lastname;
+    const firstName = req.body.firstName;
+    const lastName = req.body.lastName;
 
     const userExists = await User.findOne({
         username: username
@@ -23,25 +24,172 @@ app.post("/signup", async(req, res) => {
         })
     }
 
+    const newUser = await User.create({
+        username: username,
+        password: password,
+        firstName: firstName,
+        lastName: lastName
+    })
+
+    res.json({
+        message: "New user created",
+        id: newUser._id
+    })
+
 })
 
 app.post("/signin", async(req, res) => {
+    const username = req.body.username;
+    const password = req.body.password;
 
+    const userExists = await User.findOne({
+        username: username,
+        password: password
+    })
+
+    if(!userExists){
+        return res.status(403).json({
+            message: "Invalid credentials"
+        })
+    }
+
+    const token = jwt.sign({
+        userId: userExists._id
+    }, process.env.JWT_SECRET)
+
+    res.json({
+        token
+    })
 })
 
-app.put("/editUser", async(req, res) => {
+app.put("/editUser", authMiddleware, async(req, res) => {
+    const userId = req.userId;
+
+    const nfirstName = req.body.nfirstName;
+    const nlastName = req.body.nlastName;
+    const username = req.body.username;
+
+    const userExists = await User.findOne({
+        username: username
+    })
+
+    if(!userExists){
+        return res.status(403).json({
+            message: "user doesnt exist"
+        })
+    }
+
+    await User.updateOne({
+        _id: userExists._id
+    },{
+        firstName: nfirstName,
+        lastName: nlastName
+    })
+
+    res.json({
+        message: "User name edited"
+    })
 
 })
 
 app.get("/findUser", async(req, res) => {
+    const username = req.body.username;
 
+    const userExists = await User.findOne({
+        username: username
+    })
+
+    if(!userExists){
+        return res.status(403).json({
+            message: "user doesnt exist"
+        })
+    }
+
+    res.json({
+        userExists
+    })
 })
 
-app.get("/balance", async(req, res) => {
+app.post("/wallet", authMiddleware, async(req, res) => {
+    const userId = req.userId;
+    const balance = req.body.balance;
 
+    const userExists = await User.findOne({
+        _id: userId
+    })
+
+    if(!userExists){
+        return res.status(403).json({
+            message: "user doesnt exist"
+        })
+    }
+
+    const newWallet = await Payment.create({
+        userId: userId,
+        balance: balance
+    })
+
+    res.json({
+        message: "new wallet created"
+    })
 })
 
-app.post("/transfer", async(req, res) => {
+app.get("/balance", authMiddleware, async(req, res) => {
+    const userId = req.userId;
+
+    const userExists = await User.findOne({
+        _id: userId
+    })
+
+    if(!userExists){
+        return res.status(403).json({
+            message: "user doesnt exist"
+        })
+    }
+
+    const Chkbalance = await Payment.findOne({
+        userId: userId
+    })
+
+    res.json({
+        username: userExists.username,
+        balance: Chkbalance.balance
+    })
+})
+
+app.post("/transfer", authMiddleware, async(req, res) => {
+    const userId = req.userId;
+    const reciever_user = req.body.reciever_user;
+    const transferAmt = req.body.transferAmt;
+
+    const recUserExists = await User.findOne({
+        username: reciever_user
+    })
+
+    if(!recUserExists){
+        return res.status(403).json({
+            message: "reciever user doesnt exist"
+        })
+    }
+
+    const myAcc = await Payment.findOne({
+        userId: userId
+    })
+
+    const recAcc = await Payment.findOne({
+        userId: recUserExists._id
+    })
+
+    if(transferAmt > myAcc.balance){
+        return res.status(400).json({
+            message: "Insufficient balance"
+        })
+    }
+
+    myAcc.balance = myAcc.balance - transferAmt;
+    recAcc.balance = recAcc.balance + transferAmt;
+
+
 
 })
 
