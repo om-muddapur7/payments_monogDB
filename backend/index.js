@@ -166,6 +166,10 @@ app.post("/transfer", authMiddleware, async(req, res) => {
         username: reciever_user
     })
 
+    const userExists = await User.findOne({
+        _id: userId
+    })
+
     if(!recUserExists){
         return res.status(403).json({
             message: "reciever user doesnt exist"
@@ -187,9 +191,21 @@ app.post("/transfer", authMiddleware, async(req, res) => {
     }
 
     myAcc.balance = myAcc.balance - transferAmt;
-    recAcc.balance = recAcc.balance + transferAmt;
+    recAcc.balance = recAcc.balance + +transferAmt;
+    await myAcc.save();
+    await recAcc.save();
 
-
+    res.json({
+        message: "Transfer successful",
+        sender: {
+            username: userExists.username,
+            balance: myAcc.balance
+        },
+        receiver: {
+            username: recUserExists.username,
+            balance: recAcc.balance
+        }
+    });
 
 })
 
