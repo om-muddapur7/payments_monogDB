@@ -20,6 +20,16 @@
             <input type="text" id="password" placeholder="Enter your password">
         </div>
 
+        <div class="input-group">
+            <label for="firstName">first Name</label>
+            <input type="text" id="firstName" placeholder="Enter your firstName">
+        </div>
+
+        <div class="input-group">
+            <label for="lastName">last Name</label>
+            <input type="text" id="lastName" placeholder="Enter your lastName">
+        </div>
+
         <button onclick="signup()">Sign up</button>
     </div>
 
@@ -27,9 +37,12 @@
         async function signup(){
             const username = document.getElementById("username").value;
             const password = document.getElementById("password").value;
+            const firstName = document.getElementById("firstName").value;
+            const lastName = document.getElementById("lastName").value;
 
             try{
-                await axios.post("http://localhost:3000/signup", {username, password});
+                await axios.post("http://localhost:3000/signup", {username, password, firstName, lastName});
+                alert('Signup succesfull');
                 window.location = '/signin';
             }
             catch(error){

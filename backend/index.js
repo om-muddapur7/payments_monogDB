@@ -212,4 +212,18 @@ app.post("/transfer", authMiddleware, async(req, res) => {
 
 })
 
+const frontend_path = path.join(__dirname, "..", "frontend");
+
+app.get("/signup", (req, res) => {
+    res.sendFile(path.join(frontend_path, "signup.html"));
+})
+
+app.get("/signin", (req, res) => {
+    res.sendFile(path.join(frontend_path, "signin.html"));
+})
+
+app.get("/", (req, res) => {
+    res.sendFile(path.join(frontend_path, "index.html"));
+})
+
 app.listen(3000)

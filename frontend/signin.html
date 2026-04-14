@@ -31,7 +31,7 @@
             try{
                 await axios.post("http://localhost:3000/signin", {username, password});
                 window.location = '/index';
-                alert('signin success');
+                alert('signin successfull');
             }
             catch(error){
                 console.log("Signin failed", error);
