@@ -113,6 +113,32 @@ app.get("/findUser", async(req, res) => {
     })
 })
 
+app.get("/userDetails", authMiddleware, async(req, res) => {
+    const userId = req.userId;
+
+    const userExists = await User.findOne({
+        _id: userId
+    })
+
+    if(!userExists){
+        return res.status(403).json({
+            message: "user doesnt exist"
+        })
+    }
+
+    const Chkbalance = await Payment.findOne({
+        userId: userId
+    })
+
+    res.json({
+        username: userExists.username,
+        firstname: userExists.firstName,
+        lastname: userExists.lastName,
+        balance: Chkbalance.balance
+    })
+
+})
+
 app.post("/wallet", authMiddleware, async(req, res) => {
     const userId = req.userId;
     const balance = req.body.balance;

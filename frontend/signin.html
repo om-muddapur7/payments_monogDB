@@ -29,8 +29,12 @@
             const password = document.getElementById("password").value;
 
             try{
-                await axios.post("http://localhost:3000/signin", {username, password});
-                window.location = '/index';
+                const response = await axios.post("http://localhost:3000/signin", {username, password});
+
+                const token = response.data.token;
+                localStorage.setItem("token", token);
+
+                window.location = '/';
                 alert('signin successfull');
             }
             catch(error){

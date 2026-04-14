@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <title>Home page</title>
+</head>
+<body>
+    <h1>My dashboard</h1>
+
+    <div id="myAccount"></div>
+
+    <h1>My Transactions</h1>
+    <h2>Want to send money?</h2>
+
+    <div class="input-group">
+        <label for="recipentName">recipent Name</label>
+        <input type="text" id="recipentName" placeholder="Enter recipent Name">
+    </div>
+
+    <div class="input-group">
+        <label for="amount">amount</label>
+        <input type="number" id="amount" placeholder="Enter amount">
+    </div>
+
+    <button onclick="transact()">Transact</button>
+
+    <div id="transactionDetails"></div>
+
+    <script>
+        if(!localStorage.getItem("token")){
+            window.location = "/signin";
+        }
+
+        async function transact(){
+            const reciever_user = document.getElementById("recipentName").value;
+            const transferAmt = document.getElementById("amount").value;
+
+            try{
+                const response = await axios.post(
+                    "http://localhost:3000/transfer",
+                    {
+                        reciever_user,
+                        transferAmt
+                    },
+                    {
+                        headers: {
+                            token: localStorage.getItem("token")
+                        }
+                    }
+                );
+
+                alert('transfer succesfull');
+
+                const details = response.data;
+
+                document.getElementById("transactionDetails").innerHTML = `
+                    <h3>sender: ${details.sender.username}</h3> 
+                    <h3>balance: ${details.sender.balance}</h3>
+
+                    <h3>reciever: ${details.receiver.username}</h3> 
+                    <h3>balance: ${details.receiver.balance}</h3> 
+                `
+            }
+            catch(error){
+                console.log("transfer failed", error);
+                alert('Something went wrong');
+            }
+        }
+
+        async function getAccount(){
+            const response = await axios.get("http://localhost:3000/userDetails", {
+                headers: {
+                    token: localStorage.getItem("token")
+                }
+            })
+
+            const data = response.data;
+
+            document.getElementById("myAccount").innerHTML = `
+                <h3>username: ${data.username}</h3> 
+                <h3>firstname: ${data.firstname}</h3>
+                <h3>lastname: ${data.lastname}</h3>   
+
+                <h3>balance: ${data.balance}</h3>   
+            `
+        }
+
+        getAccount();
+    </script>
+
+</body>
+</html>
