@@ -8,7 +8,87 @@
 </head>
 
 <style>
-    
+    body{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0%;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #dfe9f3, #ffffff);
+    }
+
+    .container{
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+        background: #ffffff;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        width: 380px;
+        padding: 30px 25px;
+        border-radius: 16px;
+    }
+
+    .container:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+    }
+
+    h1{
+        text-align: center;
+        margin-bottom: 10px;
+        color: #333;
+    }
+
+    .input-group{
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    label{
+        font-weight: 600;
+        font-size: 14px;
+        color: #555;
+    }
+
+    input{
+        font-size: 14px;
+        padding: 10px 12px;
+        border-radius: 10px;
+        border: 1px solid #ccc;
+        outline: none;
+    }
+
+    input:focus{
+        border-color: #4CAF50;
+    }
+
+    button{
+        background-color: green;
+        height: 45px;
+        border: none;
+        border-radius: 12px;
+        margin-top: 15px;
+        cursor: pointer;
+    }
+
+    #signbtn{
+        font-size: 16px;
+        color: white;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+    }
+
+    button:hover{
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(76, 175, 80, 0.4);
+    }
+
+    button:active {
+        transform: scale(0.98);
+    }
+
 </style>
 
 <body>
