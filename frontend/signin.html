@@ -6,21 +6,27 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <title>Signin</title>
 </head>
+
+<style>
+    
+</style>
+
 <body>
     <div class="container">
-        <h1>Signin</h1>
+        <h1>Log in</h1>
 
         <div class="input-group">
-            <label for="username">Username</label>
+            <label for="username">Username: </label>
             <input type="text" id="username" placeholder="Enter your username">
         </div>
 
         <div class="input-group">
-            <label for="password">Password</label>
+            <label for="password">Password: </label>
             <input type="text" id="password" placeholder="Enter your password">
         </div>
 
-        <button onclick="signin()">Sign in</button>
+        <button onclick="signin()"><p id="signbtn">Sign in</p></button>
+        <p>If not yet registered. <a href="signup.html">Sign up</a></p>
     </div>
 
     <script>
