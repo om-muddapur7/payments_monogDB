@@ -127,6 +127,8 @@
     <div class="ctr1">
         <h1>My dashboard</h1>
         <div id="myAccount"></div>
+        <button onclick="editUser()"><p id="btnTxt">Edit user details</p></button>
+        <div id="edit"></div>
     </div>
 
     <div class="ctr2">
@@ -205,6 +207,48 @@
 
                 <h3>balance: ${data.balance}</h3>   
             `
+        }
+
+        async function editUser(){
+            document.getElementById("edit").innerHTML = `
+                <div class="input-group">
+                    <label for="firstname">First Name</label>
+                    <input type="text" id="firstname" placeholder="Enter new first Name">
+                </div>
+
+                <div class="input-group">
+                    <label for="lastname">last Name</label>
+                    <input type="text" id="lastname" placeholder="Enter new last Name">
+                </div>
+
+                <button onclick="update()"><p id="btnTxt">Update details</p></button>
+            `
+        }
+
+        async function update(){
+            const nfirstName = document.getElementById("firstname").value;
+            const nlastName = document.getElementById("lastname").value;
+
+            try{
+                const response = await axios.put(
+                    "http://localhost:3000/editUser",
+                    {
+                        nfirstName,
+                        nlastName
+                    },
+                    {
+                        headers: {
+                            token: localStorage.getItem("token")
+                        }
+                    }
+                );
+
+                alert('updated names succesfull. please refresh the page');
+            }
+            catch(error){
+                console.log("updating names failed", error);
+                alert('Something went wrong');
+            }
         }
 
         getAccount();

@@ -70,14 +70,19 @@ app.put("/editUser", authMiddleware, async(req, res) => {
 
     const nfirstName = req.body.nfirstName;
     const nlastName = req.body.nlastName;
-    const username = req.body.username;
+
+    if (!nfirstName || !nlastName) {
+        return res.status(400).json({
+            message: "First name and last name are required"
+        });
+    }
 
     const userExists = await User.findOne({
-        username: username
+        _id: userId
     })
 
     if(!userExists){
-        return res.status(403).json({
+        return res.status(404).json({
             message: "user doesnt exist"
         })
     }
@@ -85,14 +90,15 @@ app.put("/editUser", authMiddleware, async(req, res) => {
     await User.updateOne({
         _id: userExists._id
     },{
-        firstName: nfirstName,
-        lastName: nlastName
+        $set:{
+            firstName: nfirstName,
+            lastName: nlastName
+        }
     })
 
     res.json({
         message: "User name edited"
     })
-
 })
 
 app.get("/findUser", async(req, res) => {
