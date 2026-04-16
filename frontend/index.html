@@ -6,27 +6,147 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <title>Home page</title>
 </head>
+
+<style>
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 40px;
+        min-height: 100vh;
+        margin: 0;
+        font-family: 'Segoe UI', sans-serif;
+        background: linear-gradient(135deg, #eef2f7, #ffffff);
+    }
+
+    .ctr1, .ctr2 {
+        background: #ffffff;
+        padding: 25px;
+        width: 360px;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .ctr1 h1 {
+        font-size: 22px;
+        margin-bottom: 10px;
+        color: #222;
+    }
+
+    #myAccount {
+        background: rgb(120, 191, 15);
+        color: white;
+        padding: 20px;
+        border-radius: 14px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    #myAccount h3:last-child {
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    #myAccount h3 {
+        margin: 0;
+        font-weight: 500;
+    }
+
+    .ctr2 h1 {
+        font-size: 20px;
+        color: #222;
+    }
+
+    .ctr2 h3 {
+        font-size: 14px;
+        color: #666;
+        margin-bottom: 5px;
+    }
+
+    .input-group {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    label {
+        font-size: 13px;
+        font-weight: 600;
+        color: #555;
+    }
+
+    input {
+        padding: 10px;
+        border-radius: 10px;
+        border: 1px solid #ccc;
+        outline: none;
+        transition: 0.2s;
+    }
+
+    input:focus {
+        border-color: #4CAF50;
+        box-shadow: 0 0 4px rgba(76,175,80,0.3);
+    }
+
+    button {
+        margin-top: 10px;
+        padding: 12px;
+        border-radius: 10px;
+        border: none;
+        background: rgb(36, 172, 84);
+        color: white;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+    button:hover {
+        transform: translateY(-2px);
+    }
+
+    #transactionDetails {
+        margin-top: 10px;
+        background: #f5f7fa;
+        padding: 12px;
+        border-radius: 10px;
+    }
+
+    #transactionDetails h3 {
+        font-size: 13px;
+        text-align: left;
+        margin: 3px 0;
+    }
+
+</style>
+
 <body>
-    <h1>My dashboard</h1>
-
-    <div id="myAccount"></div>
-
-    <h1>My Transactions</h1>
-    <h2>Want to send money?</h2>
-
-    <div class="input-group">
-        <label for="recipentName">recipent Name</label>
-        <input type="text" id="recipentName" placeholder="Enter recipent Name">
+    <div class="ctr1">
+        <h1>My dashboard</h1>
+        <div id="myAccount"></div>
     </div>
 
-    <div class="input-group">
-        <label for="amount">amount</label>
-        <input type="number" id="amount" placeholder="Enter amount">
+    <div class="ctr2">
+        <h1>My Transactions</h1>
+        <h3>Want to send money?</h3>
+
+        <div class="input-group">
+            <label for="recipentName">Recipent Name</label>
+            <input type="text" id="recipentName" placeholder="Enter recipent Name">
+        </div>
+
+        <div class="input-group">
+            <label for="amount">Amount</label>
+            <input type="number" id="amount" placeholder="Enter amount">
+        </div>
+
+        <button onclick="transact()"><p id="btnTxt">Transact</p></button>
+
+        <div id="transactionDetails"></div>
     </div>
-
-    <button onclick="transact()">Transact</button>
-
-    <div id="transactionDetails"></div>
 
     <script>
         if(!localStorage.getItem("token")){
