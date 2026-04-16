@@ -260,7 +260,7 @@ app.get("/", (req, res) => {
     res.sendFile(path.join(frontend_path, "index.html"));
 })
 
-app.get("*", (req, res) => {
+app.use((req, res) => {
     res.sendFile(path.join(frontend_path, "index.html"));
 });
 
