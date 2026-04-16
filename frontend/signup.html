@@ -127,7 +127,7 @@
             const lastName = document.getElementById("lastName").value;
 
             try{
-                await axios.post("http://localhost:3000/signup", {username, password, firstName, lastName});
+                await axios.post(`${window.location.origin}/signup`, {username, password, firstName, lastName});
                 alert('Signup succesfull');
                 window.location = '/signin';
             }

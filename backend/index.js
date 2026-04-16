@@ -11,6 +11,9 @@ require('dotenv').config();
 const { User, Payment } = require('./schema');
 const { authMiddleware } = require('./middleware');
 
+const frontend_path = path.join(__dirname, "..", "frontend");
+app.use(express.static(frontend_path));
+
 app.post("/signup", async(req, res) => {
     const username = req.body.username;
     const password = req.body.password;
@@ -244,7 +247,6 @@ app.post("/transfer", authMiddleware, async(req, res) => {
 
 })
 
-const frontend_path = path.join(__dirname, "..", "frontend");
 
 app.get("/signup", (req, res) => {
     res.sendFile(path.join(frontend_path, "signup.html"));
@@ -258,4 +260,12 @@ app.get("/", (req, res) => {
     res.sendFile(path.join(frontend_path, "index.html"));
 })
 
-app.listen(3000)
+app.get("*", (req, res) => {
+    res.sendFile(path.join(frontend_path, "index.html"));
+});
+
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+    console.log("Server running");
+});

@@ -161,7 +161,7 @@
 
             try{
                 const response = await axios.post(
-                    "http://localhost:3000/transfer",
+                    `${window.location.origin}/transfer`,
                     {
                         reciever_user,
                         transferAmt
@@ -192,7 +192,7 @@
         }
 
         async function getAccount(){
-            const response = await axios.get("http://localhost:3000/userDetails", {
+            const response = await axios.get(`${window.location.origin}/userDetails`, {
                 headers: {
                     token: localStorage.getItem("token")
                 }
@@ -231,7 +231,7 @@
 
             try{
                 const response = await axios.put(
-                    "http://localhost:3000/editUser",
+                    `${window.location.origin}/editUser`,
                     {
                         nfirstName,
                         nlastName
