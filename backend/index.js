@@ -141,7 +141,7 @@ app.get("/userDetails", authMiddleware, async(req, res) => {
 
 app.post("/wallet", authMiddleware, async(req, res) => {
     const userId = req.userId;
-    const balance = req.body.balance;
+    const balance = 100;
 
     const userExists = await User.findOne({
         _id: userId
