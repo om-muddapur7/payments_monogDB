@@ -177,12 +177,15 @@
 
                 const details = response.data;
 
-                document.getElementById("transactionDetails").innerHTML = `
+                document.getElementById("transactionDetails").innerHTML += `
+                    <h1> Transaction details </h1>
                     <h3>sender: ${details.sender.username}</h3> 
                     <h3>balance: ${details.sender.balance}</h3>
 
                     <h3>reciever: ${details.receiver.username}</h3> 
                     <h3>balance: ${details.receiver.balance}</h3> 
+                    <br>
+                    <br>
                 `
             }
             catch(error){
