@@ -104,6 +104,23 @@
         transition: 0.2s;
     }
 
+    #logout {
+        margin-top: 10px;
+        padding: 12px;
+        border-radius: 10px;
+        border: none;
+        background: red;
+        color: white;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+    #logout:hover{
+        transform: translateY(-2px);
+        box-shadow: 0px 2px 5px rgb(255, 106, 0);
+    }
+
     button:hover {
         transform: translateY(-2px);
     }
@@ -148,7 +165,10 @@
         <button onclick="transact()"><p id="btnTxt">Transact</p></button>
 
         <div id="transactionDetails"></div>
+
     </div>
+
+    <button onclick="logout()" id="logout"><p id="btnTxt">Logout</p></button>
 
     <script>
         if(!localStorage.getItem("token")){
@@ -252,6 +272,11 @@
                 console.log("updating names failed", error);
                 alert('Something went wrong');
             }
+        }
+
+        async function logout(){
+            localStorage.removeItem("token");
+            window.location = "/signin";
         }
 
         getAccount();
